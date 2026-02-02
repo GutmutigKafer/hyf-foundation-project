@@ -34,16 +34,36 @@ const createCards = (gridSize, types) => {
       id: i + 1,
       name: cardType,
       picture: cardPicture,
-      status: gridSize % 2 !== 0 && i === needTypes ? "placeholder" : "down",
+      status: gridSize % 2 !== 0 && i === needTypes ? "placeholder" : "active",
     };
 
     grid[i] = card;
-    const showCard = document.createElement("div");
-    showCard.setAttribute("class", `card ${card.status}`);
+
+    //   <div class="flip-card">
+    const flipCard = document.createElement("div");
+    flipCard.setAttribute("class", `flip-card ${card.status}`);
+
+    //     <div class="flip-card-inner">
+    const flipCardInner = document.createElement("div");
+    flipCardInner.setAttribute("class", "flip-card-inner");
+    flipCard.appendChild(flipCardInner);
+
+    //       <div class="front-side"></div>
+    const frontSide = document.createElement("div");
+    frontSide.setAttribute("class", "front-side");
+
+    //       <div class="back-side"></div>
+    const backSide = document.createElement("div");
+    backSide.setAttribute("class", "back-side");
+
     const picture = document.createElement("img");
     // picture.setAttribute("src", cardPicture);
-    showCard.appendChild(picture);
-    gridDiv.appendChild(showCard);
+    backSide.appendChild(picture);
+
+    flipCardInner.appendChild(frontSide);
+    flipCardInner.appendChild(backSide);
+
+    gridDiv.appendChild(flipCard);
     allTypes.splice(typeIndx, 1);
   }
 
@@ -82,3 +102,21 @@ document.getElementById("grid-less").addEventListener("click", () => {
     updateGridDisplay();
   }
 });
+
+// Creating test
+const flipCard = document.querySelectorAll(".flip-card");
+
+if (flipCard) {
+  flipCard.forEach((card) => {
+    card.addEventListener("click", handleFlip);
+  });
+}
+
+function handleFlip(event) {
+  const cardInner = event.currentTarget.querySelector(".flip-card-inner");
+
+  if (cardInner) {
+    cardInner.classList.toggle("flipped");
+    //console.log("Card flipped");
+  }
+}
