@@ -3,19 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Memory Game</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <h1>Memory Game</h1>
     <div class="grid"></div>
-    <div class="card">
+    <button class="panel-button" onclick="togglePanel()">☰</button>
+    <div class="panel" style="display: none">
+      <div class="grid-control">
+        <button class="grid-btn" id="grid-less">←</button>
+        <div class="grid-display" id="grid-display">16</div>
+        <button class="grid-btn" id="grid-more">→</button>
+      </div>
+      <div class="count">Count: 0</div>
+      <div class="timer">Time: 0</div>
+      <div class="restart">Restart</div>
+    </div>
+    <!-- <div class="card">
       <div class="front-side">
         <h1>Front Side</h1>
       </div>
       <div class="back-side">
         <h1>Back Side</h1>
       </div>
-    </div>
+    </div> -->
     <script src="index.js"></script>
   </body>
 </html>
