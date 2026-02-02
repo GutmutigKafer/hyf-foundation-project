@@ -10,6 +10,8 @@ body {
 .card {
   width: 100%;
   aspect-ratio: 1 / 1; /* keeps the card square */
+}
+
 .grid {
   display: grid;
   gap: 1rem;
