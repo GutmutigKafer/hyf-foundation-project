@@ -21,6 +21,8 @@ let gridSize = 16;
 
 const createCards = (gridSize, types) => {
   gridDiv.innerHTML = "";
+
+  // Checking how many "types" we need depending on the grid size, then combining two array copies to create doubles
   const needTypes = Math.floor(gridSize / 2);
   const useTypes = types.slice(0, needTypes + 1);
   const grid = new Array(gridSize);
@@ -30,7 +32,7 @@ const createCards = (gridSize, types) => {
     const cardType = allTypes[typeIndx].type;
     const cardPicture = allTypes[typeIndx].pic;
     const card = {
-      // This will be used in API
+      // This is a placeholder until we connect the API
       id: i + 1,
       name: cardType,
       picture: cardPicture,
@@ -88,28 +90,36 @@ const updateGridDisplay = () => {
 
 updateGridDisplay();
 
+// Changing the size of the grid dinamically using square root
 let sqrtGridSize = Math.sqrt(gridSize);
 
 document.getElementById("grid-more").addEventListener("click", () => {
   if (sqrtGridSize < 5) {
     gridSize = (++sqrtGridSize) ** 2;
     updateGridDisplay();
+    addListenerToAll();
   }
 });
 document.getElementById("grid-less").addEventListener("click", () => {
   if (sqrtGridSize > 3) {
     gridSize = (--sqrtGridSize) ** 2;
     updateGridDisplay();
+    addListenerToAll();
   }
 });
 
 const flipCard = document.querySelectorAll(".flip-card");
+// Made into reusable function, so we can check every time for different grid sizes
+const addListenerToAll = () => {
+  const flipCard = document.querySelectorAll(".flip-card");
 
-if (flipCard) {
-  flipCard.forEach((card) => {
-    card.addEventListener("click", handleFlip);
-  });
-}
+  if (flipCard) {
+    flipCard.forEach((card) => {
+      card.addEventListener("click", handleFlip);
+    });
+  }
+};
+addListenerToAll();
 
 function handleFlip(event) {
   const cardInner = event.currentTarget.querySelector(".flip-card-inner");
