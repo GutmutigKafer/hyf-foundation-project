@@ -18,6 +18,8 @@ const cardTypes = [
 ];
 
 let gridSize = 16;
+let revealCount = 0;
+const countDisplay = document.querySelector(".count");
 
 const createCards = (gridSize, types) => {
   gridDiv.innerHTML = "";
@@ -27,6 +29,7 @@ const createCards = (gridSize, types) => {
   const useTypes = types.slice(0, needTypes + 1);
   const grid = new Array(gridSize);
   const allTypes = useTypes.concat(useTypes);
+
   for (let i = 0; i < grid.length; i++) {
     const typeIndx = Math.floor(Math.random() * allTypes.length);
     const cardType = allTypes[typeIndx].type;
@@ -66,9 +69,10 @@ const createCards = (gridSize, types) => {
     flipCardInner.appendChild(backSide);
 
     gridDiv.appendChild(flipCard);
-    allTypes.splice(typeIndx, 1);
+    allTypes.splice(typeIndx, 1); // removes the card type already used so it can't be used again
   }
 
+  //dynamically creates a square grid
   gridDiv.setAttribute(
     "style",
     `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
@@ -86,11 +90,14 @@ const togglePanel = () => {
 const updateGridDisplay = () => {
   document.getElementById("grid-display").textContent = gridSize;
   createCards(gridSize, cardTypes);
+  // Reset the reveal counter
+  revealCount = 0;
+  countDisplay.textContent = `Count: ${revealCount}`;
 };
 
 updateGridDisplay();
 
-// Changing the size of the grid dinamically using square root
+// Changing the size of the grid dynamically using square root
 let sqrtGridSize = Math.sqrt(gridSize);
 
 document.getElementById("grid-more").addEventListener("click", () => {
@@ -127,5 +134,11 @@ function handleFlip(event) {
   if (cardInner) {
     cardInner.classList.toggle("flipped");
     //console.log("Card flipped");
+
+    // Increment the counter only if the card is being flipped to reveal
+    if (cardInner.classList.contains("flipped")) {
+      revealCount++;
+      countDisplay.textContent = `Count: ${revealCount}`;
+    }
   }
 }
