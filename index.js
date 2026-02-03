@@ -69,7 +69,7 @@ const createCards = (gridSize, types) => {
 
   gridDiv.setAttribute(
     "style",
-    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`,
+    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
   );
   return grid;
 };
@@ -103,7 +103,6 @@ document.getElementById("grid-less").addEventListener("click", () => {
   }
 });
 
-// Creating test
 const flipCard = document.querySelectorAll(".flip-card");
 
 if (flipCard) {
