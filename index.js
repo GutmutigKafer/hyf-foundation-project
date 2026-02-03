@@ -18,8 +18,28 @@ const cardTypes = [
 ];
 
 let gridSize = 16;
+
 let revealCount = 0;
 const countDisplay = document.querySelector(".count");
+
+let time = 0;
+let timerInterval = null;
+let timerStarted = false;
+const timerDisplay = document.querySelector(".timer");
+
+const startTimer = () => {
+  timerInterval = setInterval(() => {
+    time++;
+    timerDisplay.textContent = `Time: ${time}`;
+  }, 1000);
+};
+
+const resetTimer = () => {
+  clearInterval(timerInterval);
+  time = 0;
+  timerStarted = false;
+  timerDisplay.textContent = "Time: 0";
+};
 
 const createCards = (gridSize, types) => {
   gridDiv.innerHTML = "";
@@ -93,6 +113,8 @@ const updateGridDisplay = () => {
   // Reset the reveal counter
   revealCount = 0;
   countDisplay.textContent = `Count: ${revealCount}`;
+
+  resetTimer();
 };
 
 updateGridDisplay();
@@ -139,6 +161,12 @@ function handleFlip(event) {
     if (cardInner.classList.contains("flipped")) {
       revealCount++;
       countDisplay.textContent = `Count: ${revealCount}`;
+
+      // Start timer on first reveal
+      if (!timerStarted) {
+        timerStarted = true;
+        startTimer();
+      }
     }
   }
 }
