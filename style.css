@@ -7,6 +7,22 @@ body {
   flex-direction: column;
 }
 
+.card {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* keeps the card square */
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  min-width: 50vw;
+  max-width: 90%;
+  height: fit-content;
+  margin-bottom: 1rem;
+  align-self: center;
+}
+
 .grid {
   display: grid;
   gap: 1rem;
