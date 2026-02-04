@@ -2,32 +2,53 @@ const gridDiv = document.querySelector(".grid");
 
 const cardTypes = [
   {
-    type: "circle",
-    pic: "https://img.icons8.com/sf-black-filled/100/filled-circle.png",
+    type: "mouse",
+    pic: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=400",
   },
   {
-    type: "triangle",
-    pic: "https://img.icons8.com/glyph-neue/100/sort-down.png",
+    type: "grey_cat",
+    pic: "https://images.unsplash.com/photo-1548681528-6a5c45b66b42?w=400",
   },
   {
-    type: "square",
-    pic: "https://img.icons8.com/material-sharp/100/unchecked-checkbox.png",
+    type: "human",
+    pic: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400",
   },
-  { type: "rectangle", pic: "https://img.icons8.com/android/96/rectangle.png" },
   {
-    type: "pentagon",
-    pic: "https://img.icons8.com/forma-light-filled-sharp/96/quintile-72.png",
+    type: "sitting_cat",
+    pic: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400",
   },
-  { type: "hexagon", pic: "https://img.icons8.com/officel/80/hexagon.png" },
   {
-    type: "heptagon",
-    pic: "https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/96/external-glyph-shapes-tanah-basah-glyph-tanah-basah-25.png",
+    type: "looking_cat",
+    pic: "https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=400",
   },
-  { type: "octagon", pic: "https://img.icons8.com/fluency/96/octagon.png" },
-  { type: "star", pic: "https://img.icons8.com/glyph-neue/64/filled-star.png" },
-  { type: "heart", pic: "https://img.icons8.com/glyph-neue/64/like--v1.png" },
-  { type: "oval", pic: "https://img.icons8.com/android/96/ellipse.png" },
-  { type: "diamond", pic: "https://img.icons8.com/poly/90/diamond.png" },
+  {
+    type: "angry_cat",
+    pic: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
+  },
+  {
+    type: "cute_dog",
+    pic: "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400",
+  },
+  {
+    type: "yellow_dog",
+    pic: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400",
+  },
+  {
+    type: "beach",
+    pic: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400",
+  },
+  {
+    type: "scenery",
+    pic: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=400",
+  },
+  {
+    type: "people_at_beach",
+    pic: "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=400",
+  },
+  {
+    type: "boat",
+    pic: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400",
+  },
 ];
 
 let gridSize = 16;
@@ -43,7 +64,7 @@ const timerDisplay = document.querySelector(".timer");
 const startTimer = () => {
   timerInterval = setInterval(() => {
     time++;
-    timerDisplay.textContent = `Time: ${time}`;
+    timerDisplay.textContent = `Time: ${time} seconds`;
   }, 1000);
 };
 
@@ -81,6 +102,7 @@ const createCards = (gridSize, types) => {
       card.name = cardType;
       card.picture = cardPicture;
       card.status = "active";
+      // removes the card type already used so it can't be used again
       allTypes.splice(typeIndx, 1);
     }
     grid[i] = card;
@@ -110,7 +132,6 @@ const createCards = (gridSize, types) => {
     flipCardInner.appendChild(backSide);
 
     gridDiv.appendChild(flipCard);
-    allTypes.splice(typeIndx, 1); // removes the card type already used so it can't be used again
   }
 
   //dynamically creates a square grid
