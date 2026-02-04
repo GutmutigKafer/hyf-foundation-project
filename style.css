@@ -157,3 +157,8 @@ body {
   text-align: center;
   user-select: none;
 }
+
+.restart:hover {
+  color: rgb(129, 14, 14);
+  cursor: pointer;
+}

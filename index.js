@@ -213,3 +213,16 @@ function handleFlip(event) {
     }
   }
 }
+
+const restartBtn = document.querySelector(".restart");
+restartBtn.addEventListener("click", restartGame);
+
+function restartGame() {
+  //reset counter
+  revealCount = 0;
+  countDisplay.textContent = `Count: ${revealCount}`;
+
+  resetTimer();
+  // recreate the grid
+  createCards(gridSize, cardTypes);
+}
