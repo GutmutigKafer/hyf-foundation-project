@@ -79,7 +79,15 @@ body {
 }
 .back-side {
   background-color: #fff8dc;
+  overflow: hidden;
   transform: rotateY(180deg);
+}
+
+.back-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills card without distortion */
+  display: block;
 }
 
 .panel {
