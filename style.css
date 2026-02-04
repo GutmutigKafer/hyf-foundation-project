@@ -7,14 +7,9 @@ body {
   flex-direction: column;
 }
 
-.card {
-  width: 100%;
-  aspect-ratio: 1 / 1; /* keeps the card square */
-}
-
 .grid {
   display: grid;
-  gap: 1rem;
+  gap: 0.5em;
   padding: 1rem;
   min-width: 50vw;
   max-width: 90%;
@@ -26,21 +21,37 @@ body {
 .flip-card {
   perspective: 1000px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 1rem;
-  padding: 0.5rem;
+  padding: 5%;
   min-width: 20%;
   text-align: center;
   aspect-ratio: 1/1;
   font-family: Arial, sans-serif;
 }
+.placeholder {
+  color: transparent;
+  cursor: default;
+}
 
 .flip-card-inner {
   width: 100%;
   height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 0.6rem;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.7s ease-in-out;
+}
+
+.flip-card.out {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
+}
+
+.flip-card.out .flip-card-inner {
+  transform: none;
 }
 
 .flip-card-inner.flipped {
