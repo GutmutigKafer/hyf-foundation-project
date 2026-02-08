@@ -1,0 +1,169 @@
+body {
+  padding: 1rem 5rem 3rem 5rem;
+  font-family: sans-serif;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid {
+  display: grid;
+  gap: 0.5em;
+  padding: 1rem;
+  min-width: 50vw;
+  max-width: 90%;
+  height: fit-content;
+  margin-bottom: 1rem;
+  align-self: center;
+}
+
+.flip-card {
+  cursor: pointer;
+  padding: 5%;
+  min-width: 20%;
+  aspect-ratio: 1/1;
+}
+.placeholder {
+  color: transparent;
+  cursor: default;
+}
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 0.6rem;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s ease-in-out;
+}
+
+.flip-card.out {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
+}
+
+.flip-card.out .flip-card-inner {
+  transform: none;
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.front-side,
+.back-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+}
+
+.front-side {
+  background: repeating-linear-gradient(
+    45deg,
+    #fdf5e6,
+    #fdf5e6 10px,
+    #f5e9d3 10px,
+    #f5e9d3 20px
+  );
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.back-side {
+  background-color: #fff8dc;
+  overflow: hidden;
+  transform: rotateY(180deg);
+}
+
+.back-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills card without distortion */
+  display: block;
+}
+
+.side-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 20%;
+  min-height: 30%;
+  border-radius: 0 0 0 1rem;
+  background-color: #f5e9d3;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1;
+}
+
+.side-panel-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  height: 1.2em;
+  width: 1.2em;
+  background: none;
+  border: none;
+  padding: 0;
+  color: black;
+  font-size: 40px;
+  cursor: pointer;
+  justify-content: center;
+  transition: color 0.2s ease;
+  z-index: 2;
+}
+.side-panel-button:hover {
+  color: #ccc;
+}
+
+.grid-control {
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  white-space: nowrap;
+  align-items: center;
+  margin: 3em auto 0;
+  background: transparent;
+  padding: 0.5em;
+  width: 140px;
+}
+
+.grid-btn {
+  background: #fdf5e6;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 0.3em;
+  font-size: 1.2em;
+  width: 40px;
+  height: 30px;
+  cursor: pointer;
+  margin: 0 0.5em;
+  transition: all 0.2s ease;
+}
+
+.grid-btn:hover {
+  background: #ccc;
+  border-color: #fdf5e6;
+}
+
+.grid-display {
+  color: black;
+  font-size: 1.2em;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+  user-select: none;
+}
+
+.restart:hover {
+  color: rgb(129, 14, 14);
+  cursor: pointer;
+}

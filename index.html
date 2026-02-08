@@ -1,9 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <h1>Memory Game</h1>
+    <div class="grid"></div>
+    <button class="side-panel-button" type="button" onclick="togglePanel()">
+      ☰
+    </button>
+    <div class="side-panel" style="display: none">
+      <div class="grid-control">
+        <button class="grid-btn" id="grid-less" type="button">←</button>
+        <div class="grid-display" id="grid-display">16</div>
+        <button class="grid-btn" id="grid-more" type="button">→</button>
+      </div>
+      <div class="count">Cards revealed: 0</div>
+      <div class="timer">Time: 0</div>
+      <button class="restart" type="button">Restart</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
