@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,25 +9,20 @@
   <body>
     <h1>Memory Game</h1>
     <div class="grid"></div>
-    <button class="panel-button" onclick="togglePanel()">☰</button>
-    <div class="panel" style="display: none">
+    <button class="side-panel-button" type="button" onclick="togglePanel()">
+      ☰
+    </button>
+    <div class="side-panel" style="display: none">
       <div class="grid-control">
-        <button class="grid-btn" id="grid-less">←</button>
+        <button class="grid-btn" id="grid-less" type="button">←</button>
         <div class="grid-display" id="grid-display">16</div>
-        <button class="grid-btn" id="grid-more">→</button>
+        <button class="grid-btn" id="grid-more" type="button">→</button>
       </div>
-      <div class="count">Count: 0</div>
+      <div class="count">Cards revealed: 0</div>
       <div class="timer">Time: 0</div>
-      <div class="restart">Restart</div>
+      <button class="restart" type="button">Restart</button>
     </div>
-    <!--     <div class="card">
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="front-side"></div>
-          <div class="back-side"></div>
-        </div>
-      </div>
-    </div>-->
-    <script src="index.js"></script>
+
+    <script src="script.js"></script>
   </body>
 </html>
