@@ -1,5 +1,22 @@
+//DOM Elements
 const gridDiv = document.querySelector(".grid");
+const countDisplay = document.getElementById("cardsRevealed");
+const timerDisplay = document.getElementById("timer");
+const restartButton = document.getElementById("restartGameBtn");
+
+// Game Variables
 let grid = [];
+let gridSize = 16;
+let revealCount = 0;
+let timeElapsed = 0;
+let timerInterval = null;
+let timerStarted = false;
+
+let flipCount = 0;
+let storedCardType = "";
+let firstCard = null;
+
+// Card Types
 const cardTypes = [
   {
     type: "mouse",
@@ -51,35 +68,26 @@ const cardTypes = [
   },
 ];
 
-let gridSize = 16;
-
-let revealCount = 0;
-const countDisplay = document.querySelector(".count");
-
-let timeElapsed = 0;
-let timerInterval = null;
-let timerStarted = false;
-const timerDisplay = document.querySelector(".timer");
-
-const flipCard = document.querySelectorAll(".flip-card");
-
-let flipCount = 0;
-let storedCardType = "";
-let firstCard = null;
-
+// Timer Functions
 const startTimer = () => {
   timerInterval = setInterval(() => {
     timeElapsed++;
-    timerDisplay.textContent = `Time: ${timeElapsed} seconds`;
+    const minutes = Math.floor(timeElapsed / 60);
+    const seconds = timeElapsed % 60;
+    timerDisplay.value = `Time: ${minutes}:${seconds}`;
   }, 1000);
 };
 
+const stopTimer = () => clearInterval(timerInterval);
+
 const resetTimer = () => {
-  clearInterval(timerInterval);
+  stopTimer();
   timeElapsed = 0;
   timerStarted = false;
-  timerDisplay.textContent = "Time: 0";
+  timerDisplay.value = "Time: 00:00";
 };
+
+// Grid & Card Functions
 
 const createCards = (gridSize, types) => {
   gridDiv.innerHTML = "";
@@ -87,7 +95,7 @@ const createCards = (gridSize, types) => {
   // Checking how many "types" we need depending on the grid size, then combining two array copies to create doubles
   const needTypes = Math.floor(gridSize / 2);
   const useTypes = types.slice(0, needTypes);
-  console.log(useTypes);
+  //console.log(useTypes);
   grid = new Array(gridSize);
   const allTypes = useTypes.concat(useTypes);
 
@@ -111,6 +119,7 @@ const createCards = (gridSize, types) => {
     }
     grid[i] = card;
 
+    //Create card element
     //   <div class="flip-card">
     const flipCard = document.createElement("div");
     flipCard.setAttribute("class", `flip-card ${card.status}`);
@@ -143,28 +152,22 @@ const createCards = (gridSize, types) => {
   //dynamically creates a square grid
   gridDiv.setAttribute(
     "style",
-    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`,
+    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
   );
   return grid;
 };
 
-const togglePanel = () => {
-  const panel = document.querySelector(".side-panel");
-  panel.style.display = panel.style.display === "none" ? "flex" : "none";
-};
-
+//Grid Display
 const updateGridDisplay = () => {
-  document.getElementById("grid-display").textContent = gridSize;
+  document.getElementById(
+    "grid-display"
+  ).textContent = `Grid size: ${gridSize}`;
   createCards(gridSize, cardTypes);
-
-  // Reset the reveal counter
-  revealCount = 0;
-  countDisplay.textContent = `Cards revealed: ${revealCount}`;
-
   resetTimer();
   addListenerToAll();
 };
 
+//Grid Size controls
 // Changing the size of the grid dynamically using square root
 let sqrtGridSize = Math.sqrt(gridSize);
 
@@ -183,6 +186,7 @@ document.getElementById("grid-less").addEventListener("click", () => {
   }
 });
 
+//Card Flip Handler
 const handleFlip = (event) => {
   const flipCard = event.currentTarget;
   const cardInner = flipCard.querySelector(".flip-card-inner");
@@ -206,7 +210,7 @@ const handleFlip = (event) => {
   // Increment the counter only if the card is being flipped to reveal
   if (cardInner.classList.contains("flipped")) {
     revealCount++;
-    countDisplay.textContent = `Cards revealed: ${revealCount}`;
+    countDisplay.value = `Cards revealed: ${revealCount}`;
 
     // Start timer on first reveal
     if (!timerStarted) {
@@ -225,14 +229,32 @@ const handleFlip = (event) => {
         flipCard.classList.add("out");
         firstCard.classList.remove("active");
         flipCard.classList.remove("active");
+
+        // 2. Update the grid status
+        const firstIndex = Number(
+          firstCard.querySelector(".flip-card-inner").classList[1]
+        );
+        const secondIndex = Number(cardInner.classList[1]);
+        grid[firstIndex].status = "out";
+        grid[secondIndex].status = "out";
+
         flipCount = 0;
         storedCardType = "";
         firstCard = null;
+
+        // Check if all cards are matched
+        const allMatched = grid.every(
+          (card) => card.status === "out" || card.status === "placeholder"
+        );
+
+        if (allMatched) {
+          endGame();
+        }
       }, 1000);
     } else {
       setTimeout(() => {
         const flippedCards = document.querySelectorAll(
-          ".flip-card-inner.flipped",
+          ".flip-card-inner.flipped"
         );
         flippedCards.forEach((card) => {
           card.classList.remove("flipped");
@@ -262,11 +284,35 @@ updateGridDisplay();
 
 //restart the game
 
-document.querySelector(".restart").addEventListener("click", restartGame);
+restartButton.addEventListener("click", restartGame);
 
 function restartGame() {
   revealCount = 0;
-  countDisplay.textContent = `Cards revealed: ${revealCount}`;
+  countDisplay.value = `Cards revealed: ${revealCount}`;
+  flipCount = 0;
+  storedCardType = "";
+  firstCard = null;
 
+  resetTimer();
   updateGridDisplay();
+  addListenerToAll();
 }
+
+//End Game
+const endGame = () => {
+  stopTimer();
+
+  document.querySelectorAll(".flip-card").forEach((card) => {
+    card.removeEventListener("click", handleFlip);
+  });
+
+  let messageDiv = document.getElementById("gameMessage");
+  if (!messageDiv) {
+    messageDiv = document.createElement("div");
+    messageDiv.id = "gameMessage";
+    messageDiv.style.display = "block";
+    gridDiv.appendChild(messageDiv);
+  }
+  messageDiv.textContent = "🎉 You won!";
+  confetti();
+};
