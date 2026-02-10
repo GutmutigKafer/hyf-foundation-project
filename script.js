@@ -1,57 +1,24 @@
 const gridDiv = document.querySelector(".grid");
 let grid = [];
-const cardTypes = [
-  {
-    type: "mouse",
-    pic: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=400",
-  },
-  {
-    type: "grey_cat",
-    pic: "https://images.unsplash.com/photo-1548681528-6a5c45b66b42?w=400",
-  },
-  {
-    type: "human",
-    pic: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400",
-  },
-  {
-    type: "sitting_cat",
-    pic: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400",
-  },
-  {
-    type: "looking_cat",
-    pic: "https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=400",
-  },
-  {
-    type: "angry_cat",
-    pic: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
-  },
-  {
-    type: "cute_dog",
-    pic: "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400",
-  },
-  {
-    type: "yellow_dog",
-    pic: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400",
-  },
-  {
-    type: "beach",
-    pic: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400",
-  },
-  {
-    type: "scenery",
-    pic: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=400",
-  },
-  {
-    type: "people_at_beach",
-    pic: "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=400",
-  },
-  {
-    type: "boat",
-    pic: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400",
-  },
-];
-
+let cardTypes = [];
 let gridSize = 16;
+
+const fetchCardTypes = async () => {
+  try {
+    const response = await fetch(`http://localhost:3000/all-pictures`);
+    const data = await response.json();
+
+    cardTypes = data.map((one) => ({
+      type: one.type,
+      pic: one.pic,
+    }));
+    console.log("Fetched cardTypes:", cardTypes);
+
+    updateGridDisplay();
+  } catch (error) {
+    console.error("Error fetching:", error);
+  }
+};
 
 let revealCount = 0;
 const countDisplay = document.querySelector(".count");
@@ -87,7 +54,7 @@ const createCards = (gridSize, types) => {
   // Checking how many "types" we need depending on the grid size, then combining two array copies to create doubles
   const needTypes = Math.floor(gridSize / 2);
   const useTypes = types.slice(0, needTypes);
-  console.log(useTypes);
+
   grid = new Array(gridSize);
   const allTypes = useTypes.concat(useTypes);
 
@@ -98,7 +65,6 @@ const createCards = (gridSize, types) => {
     const typeIndx = Math.floor(Math.random() * allTypes.length);
     let cardType;
     let cardPicture;
-
     if (gridSize % 2 !== 0 && i === needTypes) {
       card.status = "placeholder";
     } else {
@@ -155,15 +121,17 @@ const togglePanel = () => {
 
 const updateGridDisplay = () => {
   document.getElementById("grid-display").textContent = gridSize;
+  if (cardTypes.length > 0) {
   createCards(gridSize, cardTypes);
 
-  // Reset the reveal counter
   revealCount = 0;
   countDisplay.textContent = `Cards revealed: ${revealCount}`;
 
   resetTimer();
   addListenerToAll();
+  }
 };
+document.addEventListener("DOMContentLoaded", () => fetchCardTypes());
 
 // Changing the size of the grid dynamically using square root
 let sqrtGridSize = Math.sqrt(gridSize);
