@@ -1,5 +1,5 @@
 body {
-  padding: 1rem 5rem 3rem 5rem;
+  padding: 1rem;
   font-family: sans-serif;
   justify-content: center;
   text-align: center;
@@ -11,6 +11,8 @@ body {
   display: flex;
   gap: 1rem;
   margin: 1rem auto;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .game-info input,
@@ -23,7 +25,8 @@ body {
   font-size: 14px;
   text-align: center;
   height: 42px;
-  width: 160px;
+  width: 100%;
+  max-width: 260px;
   box-sizing: border-box;
 }
 
@@ -45,9 +48,9 @@ body {
 .grid {
   display: grid;
   gap: 0.5em;
-  padding: 1rem;
-  min-width: 50vw;
-  max-width: 90%;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 90vw;
   height: fit-content;
   margin-bottom: 1rem;
   align-self: center;
@@ -172,4 +175,11 @@ body {
   text-align: center;
   z-index: 999;
   display: none;
+}
+
+@media (min-width: 768px) {
+  .game-info input,
+  .game-info button {
+    width: 160px;
+  }
 }
