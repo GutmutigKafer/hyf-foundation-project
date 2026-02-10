@@ -8,20 +8,21 @@
   </head>
   <body>
     <h1>Memory Game</h1>
-    <div class="grid"></div>
-    <button class="side-panel-button" type="button" onclick="togglePanel()">
-      ☰
-    </button>
-    <div class="side-panel" style="display: none">
-      <div class="grid-control">
-        <button class="grid-btn" id="grid-less" type="button">←</button>
-        <div class="grid-display" id="grid-display">16</div>
-        <button class="grid-btn" id="grid-more" type="button">→</button>
-      </div>
-      <div class="count">Cards revealed: 0</div>
-      <div class="timer">Time: 0</div>
-      <button class="restart" type="button">Restart</button>
+    <div class="game-info">
+      <input type="text" id="cardsRevealed" value="Cards Revealed: 0" />
+      <input type="text" id="timer" value="Time: 00:00" />
+      <button type="button" id="restartGameBtn">Restart</button>
     </div>
+
+    <div class="grid-control">
+      <button class="grid-btn" id="grid-less" type="button">←</button>
+      <div class="grid-display" id="grid-display">Grid Size: 16</div>
+      <button class="grid-btn" id="grid-more" type="button">→</button>
+    </div>
+
+    <div class="grid"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti/dist/confetti.browser.min.js"></script>
 
     <script src="script.js"></script>
   </body>
