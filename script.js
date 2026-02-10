@@ -122,13 +122,13 @@ const togglePanel = () => {
 const updateGridDisplay = () => {
   document.getElementById("grid-display").textContent = gridSize;
   if (cardTypes.length > 0) {
-  createCards(gridSize, cardTypes);
+    createCards(gridSize, cardTypes);
 
-  revealCount = 0;
-  countDisplay.textContent = `Cards revealed: ${revealCount}`;
+    revealCount = 0;
+    countDisplay.textContent = `Cards revealed: ${revealCount}`;
 
-  resetTimer();
-  addListenerToAll();
+    resetTimer();
+    addListenerToAll();
   }
 };
 document.addEventListener("DOMContentLoaded", () => fetchCardTypes());
