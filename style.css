@@ -80,7 +80,9 @@ body {
 .flip-card.out {
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  transition:
+    opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
 }
 
 .flip-card.out .flip-card-inner {

@@ -3,9 +3,11 @@ const gridDiv = document.querySelector(".grid");
 const countDisplay = document.getElementById("cardsRevealed");
 const timerDisplay = document.getElementById("timer");
 const restartButton = document.getElementById("restartGameBtn");
+const flipCard = document.querySelectorAll(".flip-card");
 
 // Game Variables
 let grid = [];
+let cardTypes = [];
 let gridSize = 16;
 let revealCount = 0;
 let timeElapsed = 0;
@@ -16,59 +18,22 @@ let flipCount = 0;
 let storedCardType = "";
 let firstCard = null;
 
-// Card Types
-const cardTypes = [
-  {
-    type: "mouse",
-    pic: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=400",
-  },
-  {
-    type: "grey_cat",
-    pic: "https://images.unsplash.com/photo-1548681528-6a5c45b66b42?w=400",
-  },
-  {
-    type: "human",
-    pic: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400",
-  },
-  {
-    type: "sitting_cat",
-    pic: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400",
-  },
-  {
-    type: "looking_cat",
-    pic: "https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=400",
-  },
-  {
-    type: "angry_cat",
-    pic: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
-  },
-  {
-    type: "cute_dog",
-    pic: "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400",
-  },
-  {
-    type: "yellow_dog",
-    pic: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400",
-  },
-  {
-    type: "beach",
-    pic: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400",
-  },
-  {
-    type: "scenery",
-    pic: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=400",
-  },
-  {
-    type: "people_at_beach",
-    pic: "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=400",
-  },
-  {
-    type: "boat",
-    pic: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400",
-  },
-];
+const fetchCardTypes = async () => {
+  try {
+    const response = await fetch(`http://localhost:3000/all-pictures`);
+    const data = await response.json();
 
-// Timer Functions
+    cardTypes = data.map((one) => ({
+      type: one.type,
+      pic: one.pic,
+    }));
+    console.log("Fetched cardTypes:", cardTypes);
+
+    updateGridDisplay();
+  } catch (error) {
+    console.error("Error fetching:", error);
+  }
+};
 const startTimer = () => {
   timerInterval = setInterval(() => {
     timeElapsed++;
@@ -95,7 +60,7 @@ const createCards = (gridSize, types) => {
   // Checking how many "types" we need depending on the grid size, then combining two array copies to create doubles
   const needTypes = Math.floor(gridSize / 2);
   const useTypes = types.slice(0, needTypes);
-  //console.log(useTypes);
+
   grid = new Array(gridSize);
   const allTypes = useTypes.concat(useTypes);
 
@@ -106,7 +71,6 @@ const createCards = (gridSize, types) => {
     const typeIndx = Math.floor(Math.random() * allTypes.length);
     let cardType;
     let cardPicture;
-
     if (gridSize % 2 !== 0 && i === needTypes) {
       card.status = "placeholder";
     } else {
@@ -152,20 +116,22 @@ const createCards = (gridSize, types) => {
   //dynamically creates a square grid
   gridDiv.setAttribute(
     "style",
-    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
+    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`,
   );
   return grid;
 };
 
 //Grid Display
 const updateGridDisplay = () => {
-  document.getElementById(
-    "grid-display"
-  ).textContent = `Grid size: ${gridSize}`;
-  createCards(gridSize, cardTypes);
-  resetTimer();
-  addListenerToAll();
+  document.getElementById("grid-display").textContent =
+    `Grid size: ${gridSize}`;
+  if (cardTypes.length > 0) {
+    createCards(gridSize, cardTypes);
+    resetTimer();
+    addListenerToAll();
+  }
 };
+document.addEventListener("DOMContentLoaded", () => fetchCardTypes());
 
 //Grid Size controls
 // Changing the size of the grid dynamically using square root
@@ -232,7 +198,7 @@ const handleFlip = (event) => {
 
         // 2. Update the grid status
         const firstIndex = Number(
-          firstCard.querySelector(".flip-card-inner").classList[1]
+          firstCard.querySelector(".flip-card-inner").classList[1],
         );
         const secondIndex = Number(cardInner.classList[1]);
         grid[firstIndex].status = "out";
@@ -244,7 +210,7 @@ const handleFlip = (event) => {
 
         // Check if all cards are matched
         const allMatched = grid.every(
-          (card) => card.status === "out" || card.status === "placeholder"
+          (card) => card.status === "out" || card.status === "placeholder",
         );
 
         if (allMatched) {
@@ -254,7 +220,7 @@ const handleFlip = (event) => {
     } else {
       setTimeout(() => {
         const flippedCards = document.querySelectorAll(
-          ".flip-card-inner.flipped"
+          ".flip-card-inner.flipped",
         );
         flippedCards.forEach((card) => {
           card.classList.remove("flipped");
