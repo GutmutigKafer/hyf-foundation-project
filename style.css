@@ -22,7 +22,7 @@ body {
   border-radius: 0.6rem;
   padding: 0.6rem 0.8rem;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.9rem;
   text-align: center;
   height: 42px;
   width: 100%;
@@ -31,8 +31,6 @@ body {
 }
 
 .game-info input {
-  text-align: center;
-  width: 160px;
   pointer-events: none;
 }
 
@@ -50,15 +48,18 @@ body {
   gap: 0.5em;
   padding: 0.5rem;
   width: 100%;
-  max-width: 90vw;
+  max-width: 1200px;
   height: fit-content;
-  margin-bottom: 1rem;
+  margin: 0 auto;
+  justify-content: center;
   align-self: center;
 }
 
 .flip-card {
   cursor: pointer;
   padding: 5%;
+  width: 100%;
+  padding: 0;
   min-width: 20%;
   aspect-ratio: 1/1;
 }
@@ -80,9 +81,7 @@ body {
 .flip-card.out {
   visibility: hidden;
   opacity: 0;
-  transition:
-    opacity 0.5s ease-in-out,
-    visibility 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
 .flip-card.out .flip-card-inner {
@@ -131,7 +130,7 @@ body {
   align-items: center;
   gap: 0.1rem;
   margin-bottom: 1rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .grid-btn {
@@ -168,7 +167,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 40px;
+  font-size: 20px;
   font-weight: bold;
   color: green;
   background-color: white;
@@ -182,6 +181,30 @@ body {
 @media (min-width: 768px) {
   .game-info input,
   .game-info button {
+    font-size: 1rem;
     width: 160px;
+  }
+
+  .grid-display {
+    font-size: 1.2em;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .flip-card {
+    max-width: 300px;
+  }
+
+  #gameMessage {
+    font-size: 3rem;
+    padding: 2rem 3rem;
   }
 }
