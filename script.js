@@ -116,15 +116,17 @@ const createCards = (gridSize, types) => {
   //dynamically creates a square grid
   gridDiv.setAttribute(
     "style",
-    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`,
+    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
   );
+
   return grid;
 };
 
 //Grid Display
 const updateGridDisplay = () => {
-  document.getElementById("grid-display").textContent =
-    `Grid size: ${gridSize}`;
+  document.getElementById(
+    "grid-display"
+  ).textContent = `Grid size: ${gridSize}`;
   if (cardTypes.length > 0) {
     createCards(gridSize, cardTypes);
     resetTimer();
@@ -174,7 +176,7 @@ const handleFlip = (event) => {
 
         // 2. Update the grid status
         const firstIndex = Number(
-          firstCard.querySelector(".flip-card-inner").classList[1],
+          firstCard.querySelector(".flip-card-inner").classList[1]
         );
         const secondIndex = Number(cardInner.classList[1]);
         grid[firstIndex].status = "out";
@@ -186,7 +188,7 @@ const handleFlip = (event) => {
 
         // Check if all cards are matched
         const allMatched = grid.every(
-          (card) => card.status === "out" || card.status === "placeholder",
+          (card) => card.status === "out" || card.status === "placeholder"
         );
 
         if (allMatched) {
@@ -196,7 +198,7 @@ const handleFlip = (event) => {
     } else {
       setTimeout(() => {
         const flippedCards = document.querySelectorAll(
-          ".flip-card-inner.flipped",
+          ".flip-card-inner.flipped"
         );
         flippedCards.forEach((card) => {
           card.classList.remove("flipped");
