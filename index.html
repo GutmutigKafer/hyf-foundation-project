@@ -8,9 +8,20 @@
   </head>
   <body>
     <h1>Memory Maze</h1>
+
+    <div class="player-info">
+      <label for="playerName">Your Name:</label>
+      <input type="text" id="playerName" placeholder="Enter your name" />
+    </div>
+
     <div class="game-info">
-      <input type="text" id="cardsRevealed" value="Cards Revealed: 0" />
-      <input type="text" id="timer" value="Time: 00:00" />
+      <input
+        type="text"
+        id="cardsRevealed"
+        value="Cards Revealed: 0"
+        readonly
+      />
+      <input type="text" id="timer" value="Time: 00:00" readonly />
       <button type="button" id="restartGameBtn">Restart</button>
     </div>
 

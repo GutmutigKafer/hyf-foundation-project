@@ -4,6 +4,7 @@ const countDisplay = document.getElementById("cardsRevealed");
 const timerDisplay = document.getElementById("timer");
 const restartButton = document.getElementById("restartGameBtn");
 const flipCard = document.querySelectorAll(".flip-card");
+const getTimeFromTimer = () => timeElapsed;
 
 // Game Variables
 let grid = [];
@@ -117,6 +118,7 @@ const createCards = (gridSize, types) => {
   gridDiv.setAttribute(
     "style",
     `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
+    //`grid-template-columns: repeat(auto-fit, minmax(200px,1fr))`
   );
 
   return grid;
@@ -283,4 +285,18 @@ const endGame = () => {
   }
   messageDiv.textContent = "🎉 You won!";
   confetti();
+
+  const playerNameInput = document.getElementById("playerName");
+  const playerName = playerNameInput.value.trim();
+
+  if (!playerName) {
+    alert("Please enter your name to save your score!");
+    return;
+  }
+
+  const scoreData = {
+    player_name: playerName,
+    cards_revealed: revealCount,
+    time_taken: getTimeFromTimer(),
+  };
 };
