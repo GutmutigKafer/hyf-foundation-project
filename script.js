@@ -1,8 +1,24 @@
+import {
+  fetchCardTypes,
+  updateGridDisplay,
+  restartGame,
+  setGridSize,
+  getGridSize,
+} from "./functions.js";
+
 //DOM Elements
 const gridDiv = document.querySelector(".grid");
 const countDisplay = document.getElementById("cardsRevealed");
 const timerDisplay = document.getElementById("timer");
 const restartButton = document.getElementById("restartGameBtn");
+
+//* Initialization
+const init = async () => {
+  await fetchCardTypes();
+  updateGridDisplay(countDisplay, timerDisplay, gridDiv);
+};
+
+document.addEventListener("DOMContentLoaded", () => init());
 const flipCard = document.querySelectorAll(".flip-card");
 const getTimeFromTimer = () => timeElapsed;
 
@@ -138,165 +154,22 @@ const updateGridDisplay = () => {
 document.addEventListener("DOMContentLoaded", () => fetchCardTypes());
 
 //Grid Size controls
-// Changing the size of the grid dynamically using square root
-let sqrtGridSize = Math.sqrt(gridSize);
+let sqrtGridSize = Math.sqrt(getGridSize());
 
 document.getElementById("grid-more").addEventListener("click", () => {
   if (sqrtGridSize < 5) {
-    gridSize = (++sqrtGridSize) ** 2;
-    updateGridDisplay();
-    addListenerToAll();
+    setGridSize((++sqrtGridSize) ** 2);
+    updateGridDisplay(countDisplay, timerDisplay, gridDiv);
   }
 });
 document.getElementById("grid-less").addEventListener("click", () => {
   if (sqrtGridSize > 3) {
-    gridSize = (--sqrtGridSize) ** 2;
-    updateGridDisplay();
-    addListenerToAll();
+    setGridSize((--sqrtGridSize) ** 2);
+    updateGridDisplay(countDisplay, timerDisplay, gridDiv);
   }
 });
 
-//Card Flip Handler
-const handleFlip = (event) => {
-  const flipCard = event.currentTarget;
-  const cardInner = flipCard.querySelector(".flip-card-inner");
-  if (
-    flipCard.classList.contains("out") ||
-    flipCard.classList.contains("active") ||
-    flipCard.classList.contains("placeholder") ||
-    flipCount >= 2
-  ) {
-    return;
-  }
-
-  const indx = Number.parseInt(cardInner.classList[1]);
-  const cardType = grid[indx].type;
-
-  cardInner.classList.toggle("flipped");
-  flipCard.classList.remove("down");
-  flipCard.classList.add("active");
-  flipCount++;
-
-  // Increment the counter only if the card is being flipped to reveal
-  if (cardInner.classList.contains("flipped")) {
-    revealCount++;
-    countDisplay.value = `Cards revealed: ${revealCount}`;
-
-    // Start timer on first reveal
-    if (!timerStarted) {
-      timerStarted = true;
-      startTimer();
-    }
-  }
-
-  if (flipCount === 1) {
-    storedCardType = cardType;
-    firstCard = flipCard;
-  } else if (flipCount === 2) {
-    if (storedCardType === cardType) {
-      setTimeout(() => {
-        firstCard.classList.add("out");
-        flipCard.classList.add("out");
-        firstCard.classList.remove("active");
-        flipCard.classList.remove("active");
-
-        // 2. Update the grid status
-        const firstIndex = Number(
-          firstCard.querySelector(".flip-card-inner").classList[1]
-        );
-        const secondIndex = Number(cardInner.classList[1]);
-        grid[firstIndex].status = "out";
-        grid[secondIndex].status = "out";
-
-        flipCount = 0;
-        storedCardType = "";
-        firstCard = null;
-
-        // Check if all cards are matched
-        const allMatched = grid.every(
-          (card) => card.status === "out" || card.status === "placeholder"
-        );
-
-        if (allMatched) {
-          endGame();
-        }
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        const flippedCards = document.querySelectorAll(
-          ".flip-card-inner.flipped"
-        );
-        flippedCards.forEach((card) => {
-          card.classList.remove("flipped");
-          const flipCard = card.parentNode;
-          flipCard.classList.remove("active");
-          flipCard.classList.add("down");
-        });
-        flipCount = 0;
-        storedCardType = "";
-        firstCard = null;
-      }, 1000);
-    }
-  }
-};
-
-const addListenerToAll = () => {
-  const flipCards = document.querySelectorAll(".flip-card");
-  if (flipCards) {
-    flipCards.forEach((card) => {
-      card.removeEventListener("click", handleFlip);
-      card.addEventListener("click", handleFlip);
-    });
-  }
-};
-
-updateGridDisplay();
-
 //restart the game
-
-restartButton.addEventListener("click", restartGame);
-
-function restartGame() {
-  revealCount = 0;
-  countDisplay.value = `Cards revealed: ${revealCount}`;
-  flipCount = 0;
-  storedCardType = "";
-  firstCard = null;
-
-  resetTimer();
-  updateGridDisplay();
-  addListenerToAll();
-}
-
-//End Game
-const endGame = () => {
-  stopTimer();
-
-  document.querySelectorAll(".flip-card").forEach((card) => {
-    card.removeEventListener("click", handleFlip);
-  });
-
-  let messageDiv = document.getElementById("gameMessage");
-  if (!messageDiv) {
-    messageDiv = document.createElement("div");
-    messageDiv.id = "gameMessage";
-    messageDiv.style.display = "block";
-    gridDiv.appendChild(messageDiv);
-  }
-  messageDiv.textContent = "🎉 You won!";
-  confetti();
-
-  const playerNameInput = document.getElementById("playerName");
-  const playerName = playerNameInput.value.trim();
-
-  if (!playerName) {
-    alert("Please enter your name to save your score!");
-    return;
-  }
-
-  const scoreData = {
-    player_name: playerName,
-    cards_revealed: revealCount,
-    time_taken: getTimeFromTimer(),
-  };
-};
+restartButton.addEventListener("click", () =>
+  restartGame(countDisplay, timerDisplay, gridDiv)
+);
