@@ -131,46 +131,23 @@ const updateGridDisplay = () => {
     addListenerToAll();
   }
 };
-document.addEventListener("DOMContentLoaded", () => fetchCardTypes());
-
-//Grid Size controls
-// Changing the size of the grid dynamically using square root
-let sqrtGridSize = Math.sqrt(gridSize);
-
-document.getElementById("grid-more").addEventListener("click", () => {
-  if (sqrtGridSize < 5) {
-    gridSize = (++sqrtGridSize) ** 2;
-    updateGridDisplay();
-    addListenerToAll();
-  }
-});
-document.getElementById("grid-less").addEventListener("click", () => {
-  if (sqrtGridSize > 3) {
-    gridSize = (--sqrtGridSize) ** 2;
-    updateGridDisplay();
-    addListenerToAll();
-  }
-});
 
 //Card Flip Handler
 const handleFlip = (event) => {
   const flipCard = event.currentTarget;
   const cardInner = flipCard.querySelector(".flip-card-inner");
-  if (
-    flipCard.classList.contains("out") ||
-    flipCard.classList.contains("active") ||
-    flipCard.classList.contains("placeholder") ||
-    flipCount >= 2
-  ) {
-    return;
-  }
-
   const indx = Number.parseInt(cardInner.classList[1]);
   const cardType = grid[indx].type;
+  if (
+    flipCount >= 2 ||
+    ["out", "active", "placeholder"].some((className) =>
+      flipCard.classList.contains(className),
+    )
+  )
+    return;
 
   cardInner.classList.toggle("flipped");
-  flipCard.classList.remove("down");
-  flipCard.classList.add("active");
+  flipCard.classList.replace("down", "active");
   flipCount++;
 
   // Increment the counter only if the card is being flipped to reveal
@@ -191,10 +168,9 @@ const handleFlip = (event) => {
   } else if (flipCount === 2) {
     if (storedCardType === cardType) {
       setTimeout(() => {
-        firstCard.classList.add("out");
-        flipCard.classList.add("out");
-        firstCard.classList.remove("active");
-        flipCard.classList.remove("active");
+        [firstCard, flipCard].forEach((card) => {
+          card.classList.replace("active", "out");
+        });
 
         // 2. Update the grid status
         const firstIndex = Number(
@@ -225,8 +201,7 @@ const handleFlip = (event) => {
         flippedCards.forEach((card) => {
           card.classList.remove("flipped");
           const flipCard = card.parentNode;
-          flipCard.classList.remove("active");
-          flipCard.classList.add("down");
+          flipCard.classList.replace("active", "down");
         });
         flipCount = 0;
         storedCardType = "";
@@ -246,13 +221,7 @@ const addListenerToAll = () => {
   }
 };
 
-updateGridDisplay();
-
-//restart the game
-
-restartButton.addEventListener("click", restartGame);
-
-function restartGame() {
+const restartGame = () => {
   revealCount = 0;
   countDisplay.value = `Cards revealed: ${revealCount}`;
   flipCount = 0;
@@ -262,7 +231,7 @@ function restartGame() {
   resetTimer();
   updateGridDisplay();
   addListenerToAll();
-}
+};
 
 //End Game
 const endGame = () => {
@@ -282,3 +251,30 @@ const endGame = () => {
   messageDiv.textContent = "🎉 You won!";
   confetti();
 };
+
+//* Event Listeners
+
+document.addEventListener("DOMContentLoaded", () => fetchCardTypes());
+
+//Grid Size controls
+let sqrtGridSize = Math.sqrt(gridSize);
+
+document.getElementById("grid-more").addEventListener("click", () => {
+  if (sqrtGridSize < 5) {
+    gridSize = (++sqrtGridSize) ** 2;
+    updateGridDisplay();
+    addListenerToAll();
+  }
+});
+document.getElementById("grid-less").addEventListener("click", () => {
+  if (sqrtGridSize > 3) {
+    gridSize = (--sqrtGridSize) ** 2;
+    updateGridDisplay();
+    addListenerToAll();
+  }
+});
+
+//restart the game
+restartButton.addEventListener("click", restartGame);
+
+updateGridDisplay();
