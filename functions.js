@@ -206,7 +206,6 @@ export const addListenerToAll = (handleFlip) => {
   }
 };
 
-//End Game
 export const endGame = (gridDiv) => {
   stopTimer();
 
@@ -214,45 +213,33 @@ export const endGame = (gridDiv) => {
     card.removeEventListener("click", handleFlip);
   });
 
-  let messageDiv = document.getElementById("gameMessage");
-  if (!messageDiv) {
-    messageDiv = document.createElement("div");
-    messageDiv.id = "gameMessage";
-    messageDiv.style.display = "block";
-    gridDiv.appendChild(messageDiv);
-  }
-  messageDiv.textContent = "🎉 You won!";
-  confetti();
-
-  //Code block to write the game/user details to DB
-  setTimeout(() => {
-    const getTimeFromTimer = () => timeElapsed;
-    const playerNameInput = prompt("🎉 Enter your name to store your score:");
-
-    if (!playerNameInput || playerNameInput.trim() === "") {
-      alert("Score not saved — no name entered.");
-      return;
-    }
-
+  showNameInput(async (playerName) => {
     const scoreData = {
-      player_name: playerNameInput.trim(),
+      player_name: playerName,
       cards_revealed: revealCount,
-      time_taken: getTimeFromTimer(),
+      time_taken: timeElapsed,
     };
 
-    // Sending data (POST)
     try {
-      fetch("http://localhost:3000/submit-score", {
+      await fetch("http://localhost:3000/submit-score", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(scoreData),
       });
 
-      alert("Score saved");
-    } catch (error) {
-      console.error("Error saving score ", error);
+      let messageDiv = document.getElementById("gameMessage");
+      if (!messageDiv) {
+        messageDiv = document.createElement("div");
+        messageDiv.id = "gameMessage";
+        messageDiv.style.display = "block";
+        gridDiv.appendChild(messageDiv);
+      }
+      messageDiv.textContent = "🎉 You won!";
+      confetti();
+    } catch (err) {
+      console.error("Error saving score:", err);
     }
-  }, 1000);
+  });
 };
 
 export const restartGame = (countDisplay, timerDisplay, gridDiv) => {
@@ -286,3 +273,40 @@ export const setGridSize = (newSize) => {
 };
 
 export const getGridSize = () => gridSize;
+
+function showNameInput(callback) {
+  const container = document.createElement("div");
+  container.style.position = "fixed";
+  container.style.top = "50%";
+  container.style.left = "50%";
+  container.style.transform = "translate(-50%, -50%)";
+  container.style.background = "#fdf5e6";
+  container.style.padding = "15px";
+  container.style.border = "4px solid #f3ca80";
+  container.style.borderRadius = "5px";
+  container.style.textAlign = "center";
+  container.style.zIndex = "1000";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Enter your name";
+  input.style.marginBottom = "10px";
+
+  const button = document.createElement("button");
+  button.textContent = "Save";
+
+  container.appendChild(input);
+  container.appendChild(document.createElement("br"));
+  container.appendChild(button);
+
+  document.body.appendChild(container);
+
+  button.addEventListener("click", () => {
+    const name = input.value.trim();
+    if (!name) return alert("Please enter your name!");
+    callback(name);
+    document.body.removeChild(container);
+  });
+
+  input.focus();
+}
