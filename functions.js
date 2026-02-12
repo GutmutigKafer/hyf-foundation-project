@@ -36,7 +36,9 @@ export const startTimer = (timerDisplay) => {
     timeElapsed++;
     const minutes = Math.floor(timeElapsed / 60);
     const seconds = timeElapsed % 60;
-    timerDisplay.value = `Time: ${minutes}:${seconds}`;
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+    timerDisplay.value = `Time: ${formattedMinutes}:${formattedSeconds}`;
   }, 1000);
 };
 
@@ -135,15 +137,14 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
   flipCard.classList.replace("down", "active");
   flipCount++;
 
-  // Increment the counter only if the card is being flipped to reveal
-  if (cardInner.classList.contains("flipped")) {
-    revealCount++;
-    countDisplay.value = `Cards revealed: ${revealCount}`;
+  revealCount++;
+  countDisplay.textContent = `Cards revealed: ${revealCount}`;
 
-    // Start timer on first reveal
-    if (!timerStarted) {
-      startTimer(timerDisplay);
-    }
+  console.log(revealCount);
+  console.log(countDisplay.value);
+  // Start timer on first reveal
+  if (!timerStarted) {
+    startTimer(timerDisplay);
   }
 
   if (flipCount === 1) {
@@ -228,7 +229,7 @@ export const endGame = (gridDiv, timerDisplay) => {
 
 export const restartGame = (countDisplay, timerDisplay, gridDiv) => {
   revealCount = 0;
-  countDisplay.value = `Cards revealed: ${revealCount}`;
+  countDisplay.textContent = `Cards revealed: ${revealCount}`;
   flipCount = 0;
   storedCardType = "";
   firstCard = null;

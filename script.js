@@ -19,7 +19,6 @@ const init = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => init());
-
 //Grid Size controls
 let sqrtGridSize = Math.sqrt(getGridSize());
 

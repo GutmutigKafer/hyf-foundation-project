@@ -7,17 +7,23 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Memory Maze</h1>
+    <h1 class="game-style">Memory Maze</h1>
     <div class="game-info">
-      <input type="text" id="cardsRevealed" value="Cards Revealed: 0" />
-      <input type="text" id="timer" value="Time: 00:00" />
-      <button type="button" id="restartGameBtn">Restart</button>
+      <span id="cardsRevealed" class="game-style">Cards revealed: 0</span>
+      <input type="text" id="timer" value="Time: 00:00" class="game-style" />
+      <button type="button" id="restartGameBtn" class="game-style">
+        Restart
+      </button>
     </div>
 
     <div class="grid-control">
-      <button class="grid-btn" id="grid-less" type="button">←</button>
-      <div class="grid-display" id="grid-display">Grid Size: 16</div>
-      <button class="grid-btn" id="grid-more" type="button">→</button>
+      <button class="grid-btn game-style" id="grid-less" type="button">
+        ←
+      </button>
+      <div class="grid-display game-style" id="grid-display">Grid size: 16</div>
+      <button class="grid-btn game-style" id="grid-more" type="button">
+        →
+      </button>
     </div>
 
     <div class="grid"></div>
