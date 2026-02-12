@@ -140,8 +140,6 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
   revealCount++;
   countDisplay.textContent = `Cards revealed: ${revealCount}`;
 
-  console.log(revealCount);
-  console.log(countDisplay.value);
   // Start timer on first reveal
   if (!timerStarted) {
     startTimer(timerDisplay);
@@ -176,9 +174,9 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
         );
 
         if (allMatched) {
-          endGame(gridDiv, timerDisplay);
+          endGame(gridDiv);
         }
-      }, 1000);
+      }, 700);
     } else {
       // Not match
       setTimeout(() => {
@@ -193,7 +191,7 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
         flipCount = 0;
         storedCardType = "";
         firstCard = null;
-      }, 1000);
+      }, 700);
     }
   }
 };
@@ -209,7 +207,7 @@ export const addListenerToAll = (handleFlip) => {
 };
 
 //End Game
-export const endGame = (gridDiv, timerDisplay) => {
+export const endGame = (gridDiv) => {
   stopTimer();
 
   document.querySelectorAll(".flip-card").forEach((card) => {
@@ -240,7 +238,6 @@ export const endGame = (gridDiv, timerDisplay) => {
     cards_revealed: revealCount,
     time_taken: getTimeFromTimer(),
   };
-  console.log(scoreData);
 
   // Sending data (POST)
   try {
