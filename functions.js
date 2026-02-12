@@ -225,6 +225,35 @@ export const endGame = (gridDiv, timerDisplay) => {
   }
   messageDiv.textContent = "🎉 You won!";
   confetti();
+
+  //Code block to write the game/user details to DB
+  const getTimeFromTimer = () => timeElapsed;
+  const playerNameInput = prompt("🎉 Enter your name to store your score:");
+
+  if (!playerNameInput || playerNameInput.trim() === "") {
+    alert("Score not saved — no name entered.");
+    return;
+  }
+
+  const scoreData = {
+    player_name: playerNameInput.trim(),
+    cards_revealed: revealCount,
+    time_taken: getTimeFromTimer(),
+  };
+  console.log(scoreData);
+
+  // Sending data (POST)
+  try {
+    fetch("http://localhost:3000/submit-score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(scoreData),
+    });
+
+    alert("Score saved");
+  } catch (error) {
+    console.error("Error saving score ", error);
+  }
 };
 
 export const restartGame = (countDisplay, timerDisplay, gridDiv) => {
@@ -242,6 +271,7 @@ export const restartGame = (countDisplay, timerDisplay, gridDiv) => {
 export const updateGridDisplay = (countDisplay, timerDisplay, gridDiv) => {
   document.getElementById("grid-display").textContent =
     `Grid size: ${gridSize}`;
+  revealCount = 0;
   if (cardTypes.length > 0) {
     createCards(gridDiv);
     resetTimer(timerDisplay);

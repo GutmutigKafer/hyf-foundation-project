@@ -37,5 +37,5 @@ document.getElementById("grid-less").addEventListener("click", () => {
 
 //restart the game
 restartButton.addEventListener("click", () =>
-  restartGame(countDisplay, timerDisplay, gridDiv),
+  restartGame(countDisplay, timerDisplay, gridDiv)
 );
