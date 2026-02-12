@@ -1,4 +1,4 @@
-// Game Variables
+//* Game Variables
 let grid = [];
 let cardTypes = [];
 let gridSize = 16;
@@ -20,9 +20,7 @@ export const fetchCardTypes = async () => {
       type: one.type,
       pic: one.pic,
     }));
-    console.log("Fetched cardTypes:", cardTypes);
     return cardTypes;
-    // updateGridDisplay();
   } catch (error) {
     console.error("Error fetching:", error);
     return [];
@@ -80,21 +78,17 @@ export const createCards = (gridDiv) => {
     }
     grid[i] = card;
 
-    //Create card element
-    //   <div class="flip-card">
+    //* Create card element
     const flipCard = document.createElement("div");
     flipCard.setAttribute("class", `flip-card ${card.status}`);
 
     if (card.status === "down") {
-      //     <div class="flip-card-inner">
       const flipCardInner = document.createElement("div");
       flipCardInner.setAttribute("class", `flip-card-inner ${card.id}`);
 
-      //       <div class="front-side"></div>
       const frontSide = document.createElement("div");
       frontSide.setAttribute("class", "front-side");
 
-      //       <div class="back-side"></div>
       const backSide = document.createElement("div");
       backSide.setAttribute("class", "back-side");
 
@@ -110,12 +104,11 @@ export const createCards = (gridDiv) => {
     gridDiv.appendChild(flipCard);
   }
 
-  //dynamically creates a square grid
+  //* Dynamically create a square grid
   gridDiv.setAttribute(
     "style",
-    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
+    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`,
   );
-
   return grid;
 };
 
@@ -128,19 +121,18 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
   if (
     flipCount >= 2 ||
     ["out", "active", "placeholder"].some((className) =>
-      flipCard.classList.contains(className)
+      flipCard.classList.contains(className),
     )
   )
     return;
 
   cardInner.classList.toggle("flipped");
   flipCard.classList.replace("down", "active");
-  flipCount++;
 
+  flipCount++;
   revealCount++;
   countDisplay.textContent = `Cards revealed: ${revealCount}`;
 
-  // Start timer on first reveal
   if (!timerStarted) {
     startTimer(timerDisplay);
   }
@@ -156,9 +148,9 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
           card.classList.replace("active", "out");
         });
 
-        // 2. Update the grid status
+        // Update the grid status
         const firstIndex = Number(
-          firstCard.querySelector(".flip-card-inner").classList[1]
+          firstCard.querySelector(".flip-card-inner").classList[1],
         );
         const secondIndex = Number(cardInner.classList[1]);
         grid[firstIndex].status = "out";
@@ -170,23 +162,20 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
 
         // Check if all cards are matched
         const allMatched = grid.every(
-          (card) => card.status === "out" || card.status === "placeholder"
+          (card) => card.status === "out" || card.status === "placeholder",
         );
 
-        if (allMatched) {
-          endGame(gridDiv);
-        }
+        if (allMatched) endGame(gridDiv);
       }, 700);
     } else {
       // Not match
       setTimeout(() => {
         const flippedCards = document.querySelectorAll(
-          ".flip-card-inner.flipped"
+          ".flip-card-inner.flipped",
         );
         flippedCards.forEach((card) => {
           card.classList.remove("flipped");
-          const flipCard = card.parentNode;
-          flipCard.classList.replace("active", "down");
+          card.parentNode.classList.replace("active", "down");
         });
         flipCount = 0;
         storedCardType = "";
@@ -200,7 +189,6 @@ export const addListenerToAll = (handleFlip) => {
   const flipCards = document.querySelectorAll(".flip-card");
   if (flipCards) {
     flipCards.forEach((card) => {
-      card.removeEventListener("click", handleFlip);
       card.addEventListener("click", handleFlip);
     });
   }
@@ -255,15 +243,14 @@ export const restartGame = (countDisplay, timerDisplay, gridDiv) => {
 
 //* Grid Display
 export const updateGridDisplay = (countDisplay, timerDisplay, gridDiv) => {
-  document.getElementById(
-    "grid-display"
-  ).textContent = `Grid size: ${gridSize}`;
+  document.getElementById("grid-display").textContent =
+    `Grid size: ${gridSize}`;
   revealCount = 0;
   if (cardTypes.length > 0) {
     createCards(gridDiv);
     resetTimer(timerDisplay);
     addListenerToAll((event) =>
-      handleFlip(event, countDisplay, timerDisplay, gridDiv)
+      handleFlip(event, countDisplay, timerDisplay, gridDiv),
     );
   }
 };
@@ -274,25 +261,16 @@ export const setGridSize = (newSize) => {
 
 export const getGridSize = () => gridSize;
 
-function showNameInput(callback) {
+const showNameInput = (callback) => {
   const container = document.createElement("div");
-  container.style.position = "fixed";
-  container.style.top = "50%";
-  container.style.left = "50%";
-  container.style.transform = "translate(-50%, -50%)";
-  container.style.background = "#fdf5e6";
-  container.style.padding = "15px";
-  container.style.border = "4px solid #f3ca80";
-  container.style.borderRadius = "5px";
-  container.style.textAlign = "center";
-  container.style.zIndex = "1000";
+  container.setAttribute("class", "name-input game-style");
 
   const input = document.createElement("input");
   input.type = "text";
   input.placeholder = "Enter your name";
-  input.style.marginBottom = "10px";
 
   const button = document.createElement("button");
+  button.setAttribute("class", "game-style");
   button.textContent = "Save";
 
   container.appendChild(input);
@@ -305,8 +283,8 @@ function showNameInput(callback) {
     const name = input.value.trim();
     if (!name) return alert("Please enter your name!");
     callback(name);
-    document.body.removeChild(container);
+    container.remove();
   });
 
   input.focus();
-}
+};

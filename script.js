@@ -6,7 +6,7 @@ import {
   getGridSize,
 } from "./functions.js";
 
-//DOM Elements
+//* DOM Elements
 const gridDiv = document.querySelector(".grid");
 const countDisplay = document.getElementById("cardsRevealed");
 const timerDisplay = document.getElementById("timer");
@@ -19,7 +19,8 @@ const init = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => init());
-//Grid Size controls
+
+//* Grid Size controls
 let sqrtGridSize = Math.sqrt(getGridSize());
 
 document.getElementById("grid-more").addEventListener("click", () => {
@@ -35,7 +36,7 @@ document.getElementById("grid-less").addEventListener("click", () => {
   }
 });
 
-//restart the game
+//* Restart the game
 restartButton.addEventListener("click", () =>
   restartGame(countDisplay, timerDisplay, gridDiv),
 );

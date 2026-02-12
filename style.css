@@ -274,6 +274,41 @@ body h1 {
   display: none;
 }
 
+.name-input {
+  border-radius: 0.8rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.name-input input {
+  width: 90%;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  background-color: #f5e9d3;
+  outline: none;
+  border: 2px solid #f3ca80;
+  appearance: none;
+  font-family: "Fredoka", "Arial Rounded", sans-serif;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.name-input button {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.6rem;
+  border: 4px solid #f3ca80;
+  background-color: #fdf5e6;
+  color: #2c3e50;
+  transition: all 0.4s ease-in-out;
+}
+
+.name-input button:hover {
+  background: #f3ca80;
+  border: 4px solid #2c3e505b;
+  box-shadow: -6px 6px 15px#f3ca80;
+}
+
 @media (min-width: 768px) {
   .game-info input,
   .game-info button {
