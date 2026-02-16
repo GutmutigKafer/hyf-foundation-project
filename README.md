@@ -30,6 +30,8 @@ The JavaScript is split into three separate files to keep things clear and easy 
 
 --- Trello Project Management:
 
+Link: https://trello.com/u/shiprasrivastava2/boards
+
 We used Trello board to organize development of our Memory maze game.
 Backlog: Planned features and ideas for future development
 Sprint 1 / Sprint 2: Tasks selected from the backlog and actively worked on during each sprint
