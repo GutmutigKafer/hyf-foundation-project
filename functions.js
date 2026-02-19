@@ -107,7 +107,7 @@ export const createCards = (gridDiv) => {
   //* Dynamically create a square grid
   gridDiv.setAttribute(
     "style",
-    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`,
+    `grid-template-columns: repeat(${Math.sqrt(gridSize)}, 1fr)`
   );
   return grid;
 };
@@ -121,7 +121,7 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
   if (
     flipCount >= 2 ||
     ["out", "active", "placeholder"].some((className) =>
-      flipCard.classList.contains(className),
+      flipCard.classList.contains(className)
     )
   )
     return;
@@ -150,7 +150,7 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
 
         // Update the grid status
         const firstIndex = Number(
-          firstCard.querySelector(".flip-card-inner").classList[1],
+          firstCard.querySelector(".flip-card-inner").classList[1]
         );
         const secondIndex = Number(cardInner.classList[1]);
         grid[firstIndex].status = "out";
@@ -162,7 +162,7 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
 
         // Check if all cards are matched
         const allMatched = grid.every(
-          (card) => card.status === "out" || card.status === "placeholder",
+          (card) => card.status === "out" || card.status === "placeholder"
         );
 
         if (allMatched) endGame(gridDiv);
@@ -171,7 +171,7 @@ export const handleFlip = (event, countDisplay, timerDisplay, gridDiv) => {
       // Not match
       setTimeout(() => {
         const flippedCards = document.querySelectorAll(
-          ".flip-card-inner.flipped",
+          ".flip-card-inner.flipped"
         );
         flippedCards.forEach((card) => {
           card.classList.remove("flipped");
@@ -206,6 +206,7 @@ export const endGame = (gridDiv) => {
       player_name: playerName,
       cards_revealed: revealCount,
       time_taken: timeElapsed,
+      grid_size: gridSize,
     };
 
     try {
@@ -224,6 +225,18 @@ export const endGame = (gridDiv) => {
       }
       messageDiv.textContent = "🎉 You won!";
       confetti();
+
+      const leaderboardContainer = document.getElementById(
+        "leaderboard-container"
+      );
+      leaderboardContainer.style.display = "block";
+
+      const showBtn = document.getElementById("show-leaderboard-btn");
+      showBtn.style.display = "inline-block";
+
+      loadLeaderboard(9);
+      loadLeaderboard(16);
+      loadLeaderboard(25);
     } catch (err) {
       console.error("Error saving score:", err);
     }
@@ -243,14 +256,15 @@ export const restartGame = (countDisplay, timerDisplay, gridDiv) => {
 
 //* Grid Display
 export const updateGridDisplay = (countDisplay, timerDisplay, gridDiv) => {
-  document.getElementById("grid-display").textContent =
-    `Grid size: ${gridSize}`;
+  document.getElementById(
+    "grid-display"
+  ).textContent = `Grid size: ${gridSize}`;
   revealCount = 0;
   if (cardTypes.length > 0) {
     createCards(gridDiv);
     resetTimer(timerDisplay);
     addListenerToAll((event) =>
-      handleFlip(event, countDisplay, timerDisplay, gridDiv),
+      handleFlip(event, countDisplay, timerDisplay, gridDiv)
     );
   }
 };

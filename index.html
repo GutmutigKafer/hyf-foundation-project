@@ -8,6 +8,23 @@
   </head>
   <body>
     <h1 class="game-style">Memory Maze</h1>
+
+    <!-- Leaderboard button -->
+    <button type="button" id="toggle-leaderboard-btn" class="game-style">
+      Show Leaderboard
+    </button>
+
+    <!-- Leaderboard container -->
+    <div id="leaderboard-container" class="game-style">
+      <h2>Leaderboard</h2>
+      <h3>Grid Size: 9</h3>
+      <div id="leaderboard-9"></div>
+      <h3>Grid Size: 16</h3>
+      <div id="leaderboard-16"></div>
+      <h3>Grid Size: 25</h3>
+      <div id="leaderboard-25"></div>
+    </div>
+
     <div class="game-info">
       <span id="cardsRevealed" class="game-style">Cards revealed: 0</span>
       <input type="text" id="timer" value="Time: 00:00" class="game-style" />

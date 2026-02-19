@@ -37,7 +37,7 @@ app.listen(port, () => {
 
 const getAllPictures = async () => {
   const data = await knexInstance.raw(
-    "SELECT * FROM images ORDER BY img_id ASC;",
+    "SELECT * FROM images ORDER BY img_id ASC;"
   );
   return data;
 };
@@ -46,16 +46,43 @@ app.post("/submit-score", async (req, res) => {
   const player_Name = req.body.player_name;
   const cards_Revealed = req.body.cards_revealed;
   const time_Taken = req.body.time_taken;
+  const grid_size = req.body.grid_size;
   try {
     await knexInstance("game_scores").insert({
       player_name: player_Name,
       cards_revealed: cards_Revealed,
       time_taken: time_Taken,
+      grid_size: grid_size,
     });
 
     return res.json({ success: true, message: "Score saved!" });
   } catch (error) {
     console.error("Error fetching:", error);
     return [];
+  }
+});
+
+app.get("/leaderboard/:gridSize", async (req, res) => {
+  const { gridSize } = req.params;
+
+  try {
+    const leaderboard = await knexInstance.raw(
+      //MIN(time_taken as a player have played multiple times but we will take only their best time)
+      `
+      SELECT player_name, MIN(time_taken) as best_time
+      FROM game_scores
+      WHERE grid_size = ?
+      GROUP BY player_name
+      ORDER BY best_time ASC
+      LIMIT 5;
+    `,
+      // fill the ? with grid-size
+      [gridSize]
+    );
+
+    res.json(leaderboard);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 });

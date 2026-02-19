@@ -25,5 +25,6 @@ CREATE TABLE game_scores (
     player_name TEXT NOT NULL,
     cards_revealed INTEGER NOT NULL,
     time_taken INTEGER NOT NULL,
+    grid_size TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
