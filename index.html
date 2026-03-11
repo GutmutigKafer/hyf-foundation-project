@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 class="game-style">Memory Maze</h1>
+
+    <!-- Leaderboard button -->
+    <button type="button" id="toggle-leaderboard-btn" class="game-style">
+      Show Leaderboard
+    </button>
+
+    <!-- Leaderboard container -->
+    <div id="leaderboard-container" class="game-style">
+      <h2>Leaderboard</h2>
+      <h3>Grid Size: 9</h3>
+      <div id="leaderboard-9"></div>
+      <h3>Grid Size: 16</h3>
+      <div id="leaderboard-16"></div>
+      <h3>Grid Size: 25</h3>
+      <div id="leaderboard-25"></div>
+    </div>
+
+    <div class="game-info">
+      <span id="cardsRevealed" class="game-style">Cards revealed: 0</span>
+      <input type="text" id="timer" value="Time: 00:00" class="game-style" />
+      <button type="button" id="restartGameBtn" class="game-style">
+        Restart
+      </button>
+    </div>
+
+    <div class="grid-control">
+      <button class="grid-btn game-style" id="grid-less" type="button">
+        ←
+      </button>
+      <div class="grid-display game-style" id="grid-display">Grid size: 16</div>
+      <button class="grid-btn game-style" id="grid-more" type="button">
+        →
+      </button>
+    </div>
+
+    <div class="grid"></div>
+
+    <script type="module" src="script.js"></script>
+    <script type="module" src="functions.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti/dist/confetti.browser.min.js"></script>
+  </body>
+</html>
